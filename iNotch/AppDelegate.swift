@@ -9,7 +9,6 @@ import Cocoa
 import Combine
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-
     private var notchPanel: NotchPanel?
     private var cancellables = Set<AnyCancellable>()
 
@@ -32,8 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func showNotchPanel() {
         guard notchPanel == nil else { return }
         if let screen = NSScreen.main {
-            let center = NSPoint(x: screen.frame.midX,
-                                 y: screen.frame.maxY)
+            let center = NSPoint(x: screen.frame.midX, y: screen.frame.maxY)
             notchPanel = NotchPanel(center)
             notchPanel?.orderFrontRegardless()
             notchPanel?.fadeIn()
@@ -63,6 +61,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         mutableAttrStr.append(NSAttributedString(string: url, attributes: attr))
         let key = NSApplication.AboutPanelOptionKey.credits
         NSApp.orderFrontStandardAboutPanel(options: [key: mutableAttrStr])
+    }
+    
+    private func setNotification() {
+        let nc = NotificationCenter.default
+        nc.publisher(for: NSApplication.didChangeScreenParametersNotification)
+            .sink(receiveValue: { [weak self] _ in
+                self?.updateNotchPosition()
+            })
+            .store(in: &cancellables)
+    }
+    
+    private func updateNotchPosition() {
+        if let screen = NSScreen.main {
+            let center = NSPoint(x: screen.frame.midX, y: screen.frame.maxY)
+            notchPanel?.updateOrigin(center: center)
+        }
     }
 }
 

@@ -9,6 +9,7 @@ import Cocoa
 import Combine
 
 class NotchPanel: NSPanel {
+    private let notchSize = NSSize(width: 128.0, height: 22.0)
     private(set) var notchView = NotchView()
     
     var notchClickPublisher: AnyPublisher<NSPoint, Never> {
@@ -16,10 +17,10 @@ class NotchPanel: NSPanel {
     }
     
     init(_ center: NSPoint) {
-        let frame = NSRect(x: center.x - 64.0,
-                           y: center.y - 22.0,
-                           width: 128.0,
-                           height: 22.0)
+        let frame = NSRect(x: center.x - 0.5 * notchSize.width,
+                           y: center.y - notchSize.height,
+                           width: notchSize.width,
+                           height: notchSize.height)
         super.init(contentRect: frame,
                    styleMask: [.borderless, .nonactivatingPanel],
                    backing: .buffered,
@@ -66,5 +67,13 @@ class NotchPanel: NSPanel {
         }) {
             self.close()
         }
+    }
+    
+    func updateOrigin(center: NSPoint) {
+        let frame = NSRect(x: center.x - 0.5 * notchSize.width,
+                           y: center.y - notchSize.height,
+                           width: notchSize.width,
+                           height: notchSize.height)
+        self.setFrame(frame, display: true)
     }
 }

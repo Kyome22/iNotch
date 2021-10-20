@@ -9,7 +9,6 @@ import Cocoa
 import Combine
 
 class NotchView: NSView {
-    
     private var mouseDownSubject = PassthroughSubject<NSPoint, Never>()
     var mouseDownPublisher: AnyPublisher<NSPoint, Never> {
         return mouseDownSubject.eraseToAnyPublisher()
@@ -62,5 +61,4 @@ class NotchView: NSView {
         super.mouseDown(with: event)
         mouseDownSubject.send(event.locationInWindow)
     }
-    
 }
