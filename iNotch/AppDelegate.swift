@@ -45,8 +45,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private func showContextMenu(at: NSPoint) {
         let menu = NSMenu(title: "Menu")
-        menu.addItem(withTitle: "About", action: #selector(openAboutPanel(_:)), keyEquivalent: "")
-        menu.addItem(withTitle: "Quit", action: #selector(NSApp.terminate(_:)), keyEquivalent: "")
+        menu.addItem(withTitle: "About",
+                     action: #selector(openAboutPanel(_:)),
+                     keyEquivalent: "")
+        menu.addItem(withTitle: "Quit",
+                     action: #selector(removeNotchAndTerminate(_:)),
+                     keyEquivalent: "")
         menu.popUp(positioning: nil, at: at, in: notchPanel?.notchView)
     }
     
@@ -61,6 +65,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         mutableAttrStr.append(NSAttributedString(string: url, attributes: attr))
         let key = NSApplication.AboutPanelOptionKey.credits
         NSApp.orderFrontStandardAboutPanel(options: [key: mutableAttrStr])
+    }
+    
+    @objc func removeNotchAndTerminate(_ sender: Any?) {
+        if let notchPanel = notchPanel {
+            notchPanel.fadeOut { NSApp.terminate(nil) }
+        } else {
+            NSApp.terminate(nil)
+        }
     }
     
     private func setNotification() {

@@ -59,12 +59,13 @@ class NotchPanel: NSPanel {
         }
     }
     
-    func fadeOut() {
+    func fadeOut(_ callback: (() -> Void)?) {
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.3
             context.allowsImplicitAnimation = true
             self.notchView.animator().alphaValue = 0.0
         }) {
+            callback?()
             self.close()
         }
     }
