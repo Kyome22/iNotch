@@ -24,10 +24,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
-    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true
-    }
-    
     private func showNotchPanel() {
         guard notchPanel == nil else { return }
         if let screen = NSScreen.main {
