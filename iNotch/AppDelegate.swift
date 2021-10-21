@@ -41,6 +41,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     private func showContextMenu(at: NSPoint) {
         let menu = NSMenu(title: "Menu")
+        menu.addItem(withTitle: "Reset Notch Position",
+                     action: #selector(resetNotchPosition(_:)),
+                     keyEquivalent: "")
+        menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "About",
                      action: #selector(openAboutPanel(_:)),
                      keyEquivalent: "")
@@ -48,6 +52,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                      action: #selector(removeNotchAndTerminate(_:)),
                      keyEquivalent: "")
         menu.popUp(positioning: nil, at: at, in: notchPanel?.notchView)
+    }
+    
+    @objc func resetNotchPosition(_ sender: Any?) {
+        updateNotchPosition()
     }
     
     @objc func openAboutPanel(_ sender: Any?) {
