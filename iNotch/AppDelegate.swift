@@ -14,6 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         showNotchPanel()
+        setNotification()
     }
     
     func applicationWillTerminate(_ notification: Notification) {
